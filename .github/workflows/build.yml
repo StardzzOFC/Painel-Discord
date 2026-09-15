@@ -36,10 +36,20 @@ jobs:
 
       - name: Compilar o APK (aceita as licencas do Android sozinho)
         env:
+          # PIP_NO_BINARY obriga o pip a compilar esses pacotes a partir do
+          # codigo-fonte (sdist) em vez de baixar a wheel pronta. Sem isso,
+          # o pip pega a wheel com extensao em C/Rust, que nao tem versao
+          # para Android e nao existe recipe pra ela no python-for-android
+          # -> e isso que causava o "ResolutionImpossible" tentando TODAS
+          # as versoes do discord.py. Compilando do source, as flags
+          # *_NO_EXTENSIONS abaixo forcam a versao pura em Python, que
+          # o p4a consegue empacotar sem precisar de recipe.
+          PIP_NO_BINARY: "aiohttp,multidict,yarl,frozenlist,propcache,aiosignal"
           AIOHTTP_NO_EXTENSIONS: "1"
           MULTIDICT_NO_EXTENSIONS: "1"
           YARL_NO_EXTENSIONS: "1"
           FROZENLIST_NO_EXTENSIONS: "1"
+          PROPCACHE_NO_EXTENSIONS: "1"
         run: |
           set -o pipefail
           yes | buildozer -v android debug 2>&1 | tee build.log
