@@ -13,14 +13,14 @@ jobs:
       - name: Baixar o codigo
         uses: actions/checkout@v4
 
-      - name: Compilar com Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
-        with:
-          buildozer_version: stable
+      - name: Compilar com a imagem oficial do Buildozer
+        run: |
+          docker run --rm \
+            --volume "$PWD":/home/user/hostcwd \
+            kivy/buildozer android debug
 
       - name: Disponibilizar o APK pra download
         uses: actions/upload-artifact@v4
         with:
           name: painel-discord-apk
-          path: ${{ steps.buildozer.outputs.filename }}
+          path: bin/*.apk
