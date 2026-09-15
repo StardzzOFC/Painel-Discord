@@ -12,8 +12,9 @@ version = 0.1
 # (versoes fixadas - combinacao testada, evita pegar versao mais nova
 # que pode ter incompatibilidade com o ambiente de compilacao do Android)
 # python3==3.11 fixa a versao do Python usada DENTRO do app Android -
-# versoes mais novas (3.13/3.14) ainda tem incompatibilidades com o Kivy
-requirements = python3==3.11,kivy==2.3.0,discord.py==2.4.0,aiohttp==3.10.10,certifi,charset-normalizer,idna,multidict==6.1.0,yarl==1.15.2,attrs,frozenlist==1.4.1,aiosignal,pillow
+# versoes mais novas (3.13/3.14) ainda tem incompatibilidades com o Kivy.
+# hostpython3 precisa ser a MESMA versao (regra do proprio python-for-android)
+requirements = python3==3.11,hostpython3==3.11,kivy==2.3.0,discord.py==2.4.0,aiohttp==3.10.10,certifi,charset-normalizer,idna,multidict==6.1.0,yarl==1.15.2,attrs,frozenlist==1.4.1,aiosignal,pillow
 
 orientation = portrait
 fullscreen = 0
