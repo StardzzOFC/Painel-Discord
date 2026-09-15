@@ -29,6 +29,11 @@ jobs:
         run: pip install --upgrade Cython buildozer
 
       - name: Compilar o APK (aceita as licencas do Android sozinho)
+        env:
+          AIOHTTP_NO_EXTENSIONS: "1"
+          MULTIDICT_NO_EXTENSIONS: "1"
+          YARL_NO_EXTENSIONS: "1"
+          FROZENLIST_NO_EXTENSIONS: "1"
         run: yes | buildozer -v android debug
 
       - name: Disponibilizar o APK pra download
