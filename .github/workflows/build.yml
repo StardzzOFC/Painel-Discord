@@ -34,7 +34,18 @@ jobs:
           MULTIDICT_NO_EXTENSIONS: "1"
           YARL_NO_EXTENSIONS: "1"
           FROZENLIST_NO_EXTENSIONS: "1"
-        run: yes | buildozer -v android debug
+        run: |
+          set -o pipefail
+          yes | buildozer -v android debug 2>&1 | tee build.log
+
+      - name: Se der erro, mostrar so a parte importante do log
+        if: failure()
+        run: |
+          echo "===== ULTIMAS 150 LINHAS DO LOG ====="
+          tail -n 150 build.log
+          echo ""
+          echo "===== LINHAS QUE MENCIONAM ERRO ====="
+          grep -i -E "error|failed|traceback" build.log | tail -n 80
 
       - name: Disponibilizar o APK pra download
         uses: actions/upload-artifact@v4
