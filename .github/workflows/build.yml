@@ -18,6 +18,12 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Configurar Java 17 (necessario para o Android Gradle Plugin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Instalar dependencias do sistema
         run: |
           sudo apt-get update
