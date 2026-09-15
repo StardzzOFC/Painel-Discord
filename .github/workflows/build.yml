@@ -8,16 +8,28 @@ on:
 jobs:
   build-android:
     name: Build for Android
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Baixar o codigo
         uses: actions/checkout@v4
 
-      - name: Compilar com a imagem oficial do Buildozer
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependencias do sistema
         run: |
-          docker run --rm \
-            --volume "$PWD":/home/user/hostcwd \
-            kivy/buildozer android debug
+          sudo apt-get update
+          sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip \
+            autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake \
+            libffi-dev libssl-dev automake build-essential libltdl-dev
+
+      - name: Instalar buildozer
+        run: pip install --upgrade Cython buildozer
+
+      - name: Compilar o APK (aceita as licencas do Android sozinho)
+        run: yes | buildozer -v android debug
 
       - name: Disponibilizar o APK pra download
         uses: actions/upload-artifact@v4
